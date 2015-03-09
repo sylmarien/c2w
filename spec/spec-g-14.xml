@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+
+<!ENTITY RFC2629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml">
+-considerations-rfc2434bis.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- do not display copyright and other IETF-related stuff -->
+<?rfc private="(c) GROUP 14, 2013" ?>
+
+<rfc category="info" docName="draft-ietf-xml2rfc-template-05" ipr="trust200902">
+  <!-- category values: std, bcp, info, exp, and historic
+     ipr values: full3667, noModification3667, noDerivatives3667
+     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+     they will automatically be output with "(if approved)" -->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <!-- The abbreviated title is used in the page header - it is only necessary if the 
+         full title is longer than 39 characters -->
+
+    <title abbrev="Group 14 protocol specification">Group 14: c2w protocol specification proposal
+    </title>
+
+    <!-- add 'role="editor"' below for the editors if appropriate -->
+    
+    <author fullname="Maxime Schmitt" initials="M.S."
+            surname="Schmitt" role="editor">
+      <organization>Telecom Bretagne</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <!-- Reorder these if your country does things differently -->
+
+          <city>Brest</city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>FR</country>
+        </postal>
+
+        
+
+        <email>maxime.schmitt@telecom-bretagne.eu</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+    <!-- Another author who claims to be an editor -->
+
+    <author fullname="Kevin Bourgeois" initials="K.B."
+            surname="Bourgeois">
+      <organization>Telecom Bretagne</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <!-- Reorder these if your country does things differently -->
+
+          <city>Brest</city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>FR</country>
+        </postal>
+
+        
+
+        <email>kevin.bourgeois@telecom-bretagne.eu</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+    <author fullname="Benoit Perron" initials="B.P."
+            surname="Perron">
+      <organization>Telecom Bretagne</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <!-- Reorder these if your country does things differently -->
+
+          <city>Brest</city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>FR</country>
+        </postal>
+
+        
+
+        <email>benoit.perron@telecom-bretagne.eu</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+    <author fullname="Florian Solinhac" initials="F.S."
+            surname="Solinhac">
+      <organization>Telecom Bretagne</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <!-- Reorder these if your country does things differently -->
+
+          <city>Brest</city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>FR</country>
+        </postal>
+
+        
+
+        <email>florian.solinhac@telecom-bretagne.eu</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+
+
+    <date month="March" year="2013" />
+
+    <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
+         in the current day for you. If only the current year is specified, xml2rfc will fill 
+	 in the current day and month for you. If the year is not the current one, it is 
+	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+	 specify just the year. -->
+
+    <keyword>c2w</keyword>
+
+    <!-- Keywords will be incorporated into HTML output
+         files in a meta tag but they have no effect on text or nroff
+         output. If you submit your draft to the RFC Editor, the
+         keywords will be used for the search engine. -->
+
+    <abstract>
+      <t>
+        This protocol has been created to manage the connections between an user and a chat server.
+        After the connection, the client can send messages to other clients.
+        Users are divided into “movie room”, which is a special chat window associated on a streamed movie. A main room list all the users connected to the chat, with their availability (watching a movie or not ?).
+      </t>
+      <t>
+        The solution of a text protocol was chosen for its simplicity. 
+        With explicits commands, the implementation of the protocol in a program will be much easier.
+      </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+      <t>In the context of our Python project we have developed a specific protocol.
+        This protocol is a client/server protocol and enables to manage a system with different rooms in which there are a video stream and a chat between watchers.
+        This protocol can be carried by either UDP or TCP protocols, which means that it can recover from a loss of packet and keep the chronology of the packets.
+        And it permits the private dialogue between two users connected to the service.
+      </t>
+      <t>
+        The goal of this document is to present this protocol, its requests, its frame’s format.
+        It includes a scenario in order to illustrate its functioning.
+      </t>
+
+    </section>
+
+    <section title="Glossary">
+      <t>
+        <list hangIndent="8" style="hanging">
+          <t hangText="c2w">Application’s name for which this protocol is designed.</t>
+          <t hangText="Movie room">Window where you can chat and watch a movie in the same time.</t>
+          <t hangText="Main room">Window where you can select the movie to watch, see all the connected users and know whether they are or not in a movie room.</t>
+        </list>
+      </t>
+    </section>
+
+    <section title="Functional specification">
+      <t>This section explains the mecanisms of the protocol.</t>
+      <section title="Packet format">
+        <t>
+        <figure>
+        <artwork>
+       +-----------------+-----------+-------------+---------+
+       |                 | SOURCE    | DESTINATION |         |
+       |       TYPE      |   IP      |     IP      |         |
+       |       13B       |   4B      |     4B      |         |
+       +-----------------+---------+-+-------------+---------|
+       |                           |                         |
+       |         OPTIONS           |                         |
+       |           37B             |                         |
+       +---------------------------+                         |
+       |                                                     |
+       .                         DATA                        .
+       .                         198B                        .
+       .                                                     .
+       |                                                     |
+       +-----------------------------------------------------+
+        </artwork></figure></t>
+
+        <t>
+          The length of the packet is fixed to 256 bytes. Thus, there is no need for special separator.
+        </t>
+        <t>
+          The first part of the packet is composed by the TYPE of the request.
+          The longest request is a GIVEMOVIELIST, so the field will be 13 ASCII symbols (13 bytes).
+        </t>
+        <t>The following fields are the Source IP adress and the Destination IP adress, each 4 bytes long.</t>
+        <t>
+          Then comes the OPTIONS field. The biggest option is for a “ACKRCVPRIVATE pseudoSender pseudoReceiver numMsg”.
+          We limit the nickname to 15 symbols, so the total length will be 15 + 15 = 30 for the nicknames, 4 bytes for the numMsg and 3 bytes for the spaces characters between the options. The option field contains 37 bytes.
+        </t>
+        <t>
+          At last, the length of the header is 58 bytes.
+        </t>
+        <t>
+          The fields which are not always full need sometimes to be completed by as much null symbols in ascii as required.
+          The option field is different from the others, indeed each subfield is delimited by an ascii character which is “ “ (space).
+          Then, when every option is detailed, we complete the option field with null symbols in ascii.
+        </t>
+        <t>
+          Then, there is the message field which is 198 Bytes long.
+          If the message is shorter than 198 characters, as previously we complete the field with null symbols in ascii.
+        </t>
+      </section>
+      
+      <section title="Terminology">
+        <t>The requests used by this protocol are the following ones.
+        <list hangIndent="8" style="hanging">
+          <t hangText="PING">Ask for the reachability. 
+          In the connection process, the client sends multiple PING requests and after 5 seconds without any PONG answer, considers that the server is not reachable.
+          After the connextion process, it is advised that both server and client send every 6 seconds a PING in order to check whether the connection has not broken and to consider that the connection is broken after 30 seconds without any PONG answer.</t>
+          
+          <t hangText="PONG">Answer to PING. The sender confirms its reachabiliy.</t>
+
+          <t hangText="PLOP id pseudo">Ask to connect the user named pseudo to the room identified by the id given as argument. After N seconds without any PLAP answer, consider that the connection has failed.</t>
+
+          <t hangText="PLAP id list_users">Confirm the connection to the room identified by the id given as argument succeeded and give the list "list_users" of the users connected. The format of the list is (avalaibility,pseudo). Each element of the list is separated from the others by a character ";". Also launch the video stream when id different from 0.</t>
+
+          <t hangText="ISUSED">Error message answering to a "PLOP 0 pseudo" request meaning that  the pseudo asked is already used.</t>
+
+          <t hangText="PLOUF">Inform that the connection failed.</t>
+
+          <t hangText="GETMOVIELIST">Ask for the list of the movies. After 5 seconds without any GIVEMOVIELIST answer, resend the request.</t>
+
+          <t hangText="GIVEMOVIELIST argument">Send the list of the movies. argument must be one of the following ones : 
+            <list style="symbols">
+              <t>An (id,title) list where title is the title of the video and id an number identificating it. Each element of the list is separated from the others by a character ";".</t>
+              <t>The figure 0. It's the error code meaning that there is no video to be shown.</t>
+            </list>
+          </t>
+
+          <t hangText="DISC id">Ask to disconnect the sender of the request, identified by his IP adress, from the room identified by the id given as argument. After 5 seconds without any DISCOK answer, resend the request.</t>
+
+          <t hangText="DISCOK id">Confirm the disconnection from the room identified by the id given as argument. When sending this request, the server changes the avalaibility information of the user and then sends the updated list of users to connected users (see UPLIST).
+          Sent even if the user was not connected to the room when he asked to be disconnected from it in order to manage the case where the DISCOK requests did not arrived to him the last time.</t>
+
+          <t hangText="SENDMSG id pseudo ACKnum message">Send a message. Signification of the arguments :
+            <list style="symbols">
+              <t>id : the id of the room that is concerned by the message.</t>
+
+              <t>pseudo : the username of the sender of the message.</t>
+
+              <t>ACKnum : a number that identified the request so that it is possible to know which message is concerned by an acknowledgement and so that the receiver will be able to know if this is the next message he has to accept.</t>
+
+              <t>message : the message sent by the user. Cannot exceed 198 characters.</t>
+            </list>
+            After 5 seconds without any ACKRCVMSG answer, resend the request.
+          </t>
+
+          <t hangText="ACKRCVMSG id pseudo ACKnum">Confirm to the sender of a SENDMSG request that it has been received. The user, or the server, that acknowledges is identified by its IP adress. Signification of the arguments :
+            <list style="symbols">
+              <t>id : the id of the room that is concerned by the message.</t>
+
+              <t>pseudo : the sender's username of the original SENDMSG request that was sent to the server.</t>
+
+              <t>ACKnum : the ACKnum of the SENDMSG request that is confirmed.</t>
+            </list>
+          </t>
+
+          <t hangText="UPLIST id list_users">Send the updated list "list_users" of the users connected to the room identified by the id given as argument. After 5 seconds without any ACKUPLIST answer, resend the request.</t>
+
+          <t hangText="ACKUPLIST">Confirm that the list of connected users has been updated.</t>
+
+          <t hangText="SENDPRIVATE pseudoSender pseudoReceiver numMsg message">Send a private message. Works almost in the same way as SENDMSG, the only difference is that the server only sends the request to the user whose username is PseudoReceiver.</t>
+
+          <t hangText="ACKRCVPRIVATE pseudoSender pseudoReceiver numMsg">Confirm to the sender of a SENDPRIVATE request that it has been received. Works exactly in the same way as ACKRCVMSG except that the receiver knows who has received the message (useful if the user has multiple private chat opened at the same time).</t>
+
+          <t hangText="TROLL">Error message that answer to any unexpected packet.</t>
+      </list></t></section>
+    </section>
+
+    <section title="Send and receive message acknowledgement specifications">
+      <t>This section explains in details how the acknoledgement system works in the case of sending and receiving messages.</t>
+      <section title="Generalities">
+        <t>
+          Each user saves two numbers : one is named ACKnumClientSend and the other ACKnumClientReceive in the following explanations.
+        </t>
+        <t>
+          For each user, the server saves two numbers : one is named ACKnumServerSend and the other ACKnumServerReceive in the following explanations.
+        </t>
+        <t>
+          ACKnumClientSend is the ACKnum described in the SENDMSG request description in the case where that's the user that sends this request.
+        </t>
+        <t>
+          ACKnumClientReceive is the ACKnum described in the ACKRCVMSG request description in the case where that's the user that sends this request.
+        </t>
+        <t>
+          ACKnumServerSend is the ACKnum described in the SENDMSG request description in the case where that's the server that sends this request.
+        </t>
+        <t>
+          ACKnumServerReceive is the ACKnum described in the ACKRCVMSG request description in the case where that's the server that sends this request.
+        </t>
+      </section>
+
+      <section title="On the sender's side">
+        <t>
+          In the case where the sender is a user, the communication works in the following way :
+        </t>
+        <t>
+          After having sent his SENDMSG request, the user increments his ACKnumClientSend by 1. If, when the timer ends, he has not received any acknowledgement for this message, he sends the exact same request again. And this repeats until he receives the acknowledgement or until he knows that the connection is broken.
+        </t>
+        <t>
+          In the case where the sender is the server, the communication works in the following way :
+        </t>
+        <t>
+          After having sent his SENDMSG request to a user, the server increments the ACKnumServerSend associated to the user to whom he sends the message by 1.
+          If, when the timer ends, he has not received any acknowledgement for this message, he sends the exact same request again. And this repeats until he receives the acknowledgement or until he knows that the connection is broken.
+        </t>
+      </section>
+
+      <section title="On the receiver's side">
+        <t>
+          In the case where the receiver is a user, the communication works in the following way :
+        </t>
+        <t>
+          He gets the ACKnum that was sent by the ACKRCVMSG request he received and compares it to his ACKnumClientReceive, there are three possibiliy :
+          <list style="symbols">
+            <t>the ACKnum received is lower than the stored one : only sends to the server the ACKRCVMSG corresponding to the ACKnum received because this message has apparently already been received.</t>
+            <t>the ACKnum received is equal to the stored one : the user print the message that just arrived in the chatbox and sends back an ACKRCVMSG request with the correct arguments to the server. He then increments his ACKnumClientReceive by 1.</t>
+            <t>the ACKnum received is larger than the stored one : the user does nothing, there apparently are other message(s) to be received first, this message will be sent regularly by the server until the user accepts it.</t>
+          </list>
+        </t>
+        <t>
+          In the case where the receiver is a user, the communication works in the following way :
+        </t>
+        <t>
+          He gets the ACKnum that was sent by the ACKRCVMSG request he received and compares it to his ACKnumServerReceive, there are three possibiliy :
+          <list style="symbols">
+            <t>the ACKnum received is lower than the stored one : only sends to the user the ACKRCVMSG corresponding to the ACKnum received because this message has apparently already been received.</t>
+            <t>the ACKnum received is equal to the stored one : the server broadcast the message that just arrived to all the users in the room (including the sender) and sends back an ACKRCVMSG request with the correct arguments to the client. He then increments his ACKnumServerReceive by 1.</t>
+            <t>the ACKnum received is larger than the stored one : the server does nothing, there apparently are other message(s) to be received first, this message will be sent regularly by the user until the server accepts it.</t>
+          </list>
+        </t>
+      </section>
+      <section title="Data format">
+        <t>
+          This section describes the format and the use of different data.
+        <list hangIndent="8" style="hanging">
+          <t hangText="Movie list">A serie of (id,title) couples where id is the number identifying the video with the title "title". These couples are separated by a ";".</t>
+          <t hangText="User list">A serie of (avalaibility,pseudo) couples where avalaibility is "A" if the user, which username is "pseudo", is not in a movie room and a "M" if the user is in a movie room. The client software choose to (resp. or not to) display the avalaibility information whether the user is in the main room (resp. or in a movie room). These couples are separated by a ";".</t>
+        </list>
+      </t>
+      </section>
+    </section>
+
+    <section title="Example scenarios">
+      <t>This section illustrates the functioning of the protocol in a classic use of it.</t>
+    <section title="General scenario">
+    <t>
+      When a client wants to connect to C2W, he sends a PING request on the server. 
+      If it responds by a PONG, the client knows that the server is reachable. 
+      Thus, he sends a « PLOP 0 pseudo » request (where pseudo is his nickname and 0 the id of the main room).
+      The server checks if the pseudo isn't already used. If the pseudonym isn't free, the server sends an “ISUSED” error message.
+      In the other case, he sends a “PLOP 0 list_users” (where list_users is the users' list).
+      If the server doesn't want to connect the client for another reason, it sends a PLOUF request.The client asks for the movie list with a “GETMOVIELIST” request.
+      The answer sent by the server is a “GIVEMOVIELIST (id1,title1);(id2,title2);...” where the couple are the id of each movie and their title.
+      If the list is empty or if there is any other error, the server answers a “GIVEMOVIELIST 0”.
+    </t>
+    <t>
+      The client selects a movie, and asks to connect to the associated movie room.
+      He uses a “PLOP id pseudo” request, where id is the id of the movie room. The server answers by a “PLAP id list_users”.
+    </t>
+    <t>
+      Then, the client wants to send a message on the chat. He sends a “SENDMSG id pseudo ACKnum message” request on the server.
+      Message contains the message typed by the user and id/pseudo are the same as before.
+      ACKnum is a number initialized at 0 and incremented by one each time that a message is sent (a SENDMSG). The server answers by a “ACKRCVMSG id pseudo ACKnum”.
+      The ACKnum received by the client should be the same as the one he sent.
+      If not, the message would be sent again.
+      Then the server send a “SENDMSG id pseudo ACKnum message” to all users in the movie room id (including the one that has sent the message).
+      Pseudo is the pseudonym of the original poster, and ACKnum a specific number for each connection with the other clients.
+      The clients check the reception of the message by a “ARCVMSG id pseudo ACKnum”, ACKnum being the ACKnum they personally received from the server.
+    </t>
+    <t>
+      When the user wants to close a movie room, he sends a “DISC id” request, where id is the id of the movie room.
+      The server answers by a “DISCOK id” and erase him of the user list associated with the movie chat room. If the user wants to totally quit the application, he sends a “DISC 0”.
+      When a user quit a movie room, the server modify its associated list_users, and sends a “UPLIST id list_users” on every clients concerned (id=0 → all clients, id != 0 → just in the movie room).
+      This request update the user list, and update their availability.
+      Thus, after a DISC id (id!=0), the user's status change from M to A.
+      An ACKUPLIST id is send by every client to confirm the update. 
+    </t>
+  </section>
+
+  <section title="Illustrated scenario">
+    <t>
+      The previous scenario is rather general, so in the following illustration is a more specific case.
+    </t>
+    <t>
+      Indeed, at the beginning the user tries to connect to the main room (room 0) with the pseudo « BOB », however this pseudo is already used.
+      So the server sends back ISUSED.
+      Then the user tries with the pseudo « ALICE ».
+      Here, this pseudo is free so the server answer PLAP 0 List_users (it sends back to the user the list of the user).
+    </t>
+    <t>
+      The user send a request PLOP 4 Alice to connect to the movie room 4, the server answer
+      PLAP 4 list_user. 
+      Then the user send a SENDMSG 4 Alice 0 message (the value of the ACKnum is 0 because it is the user’s first sending ).
+      Unfortunately, this message is lost, so the server doesn’t receive it.
+      So wenn the timer ends, the user resends SENDMSG 4 Alice 0 message. This time, the server receives the request and answers the ACKRCVMSG 4 Alice 0 to the user and 
+      sends SEND 4 Alice 131 to user 2 (131 is the ACKnum of the server between server and user2) and to all other users who are in the same room (their ACKnum are different).
+      And those users send an ACKRCVMSG 4 Alice 131 to the server.
+    </t>
+    <t>
+    <figure>
+    <artwork>
+user                           server
++                                +
+|             PING               |
++-------------------------------&gt;|
+|                                |
+|             PONG               |
+|&lt;------------------------------+|
+|                                |
+|          PLOP 0 BOB            |
+|+------------------------------&gt;|
+|                                |
+|             ISUSED             |
+|&lt;------------------------------+|
+|                                |
+|          PLOP 0 ALICE          |
+|+------------------------------&gt;|
+|                                |
+|         PLAP 0 List_users      |
+|&lt;------------------------------+|
+|                                |
+|         GETMOVIELIST           |
+|+------------------------------&gt;|
+|                                |
+|         GIVEMOVIELIST          |
+|&lt;------------------------------+|
+|                                |
+|                                |
+|                                |                             user 2
+|                                |                                  +
+|       PLOP 4  Alice            |                                  |
+|-------------------------------&gt;|                                  |
+|                                |                                  |
+|       PLAP 4  list_users       |                                  |
+|&lt;------------------------------+|                                  |
+|                                |                                  |
+|     SENDMSG 4 Alice  0  message|                                  |
+|+------------------------------>|                                  |
+| +                              |                                  |
+| |              .               |                                  |
+| |              .               |                                  |
+| |TIMER         .               |                                  |
+| |              .               |                                  |
+| |              .               |                                  |
+| |              .               |                                  |
+| v SENDMSG 4 Alice  0  message  |                                  |
+|+------------------------------&gt;|                                  |
+|                                |  SENDMSG 4 Alice 131   message   |
+|   ACKRCVMSG 4  Alice  0        |+--------------------------------&gt;|
+|&lt;------------------------------+|                                  |
+|                                |    ARCVMSG 4 Alice 131           |
+|     SENDMSG 4 Alice  1 message |&lt;--------------------------------+|
+|+------------------------------&gt;|                                  |
+|                                |  SENDMSG 4 Alice 132   message   |
+|   ACKRCVMSG 4 Alice  1         |+--------------------------------&gt;|
+|&lt;------------------------------+|                                  |
+|                                |    ARCVMSG 4 Alice 132           |
+|                                |&lt;--------------------------------+|
+v                                v                                  v   
+
+    </artwork></figure></t>
+    
+    </section><!--End of example 1-->
+    </section><!--End of examples-->
+
+    <section title="Conclusion">
+        <t>
+          The protocol is designed to handle the communications of the C2W program.
+          With it, a user can connect to the program with a unique nickname, choose a movie and chat with other users in the same movie room.
+          He can chat in private too.
+        </t>
+        <t>
+          If some errors can be managed due to the use of the acknowledgement system and the ping/pong mechanism, the security is nearly inexistent.
+          Thus, a malicious hacker can disconnect another client, hijack his identity, etc.
+          </t>
+          <t>
+          The acknowledgement system is composed of different request.
+          Each type of interaction dispose of its own acknowledgement.
+          If at first it could seem more confused, the information computing is faster (there are less unknown informations to find in the packet). It is important to remember that the server has to have a list stored locally which contains the correspondence between users and their IP and that it has to store the ACKnum too.
+        </t>
+    </section>
+  </middle>
+</rfc>

@@ -1,0 +1,7 @@
+#1 : vérifier validité du code existant
+#2 : implémentation de la userList : -en cas de connexion ajouter l'utilisateur
+									 -en cas de demande de la liste il faut la renvoyer
+									 -gérer les changements de Movie Room
+									 -gérer les déconnexions (plus tard)
+#2 : implémentation de la movieList :-en cas de demande de l'utilisateur
+									 -en cas de changement, modifier cette liste en conséquence
