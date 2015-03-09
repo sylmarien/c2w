@@ -1,0 +1,77 @@
+from twisted.internet.protocol import Protocol, Factory
+from twisted.internet.endpoints import TCP4ServerEndpoint
+from twisted.internet import reactor
+import struct
+from ctypes import create_string_buffer
+from c2w_main.user import User, UserList
+from c2w_main.movie import Movie, MovieList
+import ctypes
+import binascii
+#from collections import namedtuple
+import twisted.internet.protocol
+
+class BinChatServerProtocol(Protocol):
+
+    lastUserId = 0b10000000
+
+    def __init__(self, users, movies, factory):
+
+        # initialization stuff
+        self.users = users
+        self.movies = movies
+        self.factory = factory
+        self.buffer = ctypes.create_string_buffer(16)
+        self.pos = 0
+        self.lengthReceived = 0
+        self.packSize = 0
+        #Packet = namedtuple('packet', ['msgLen', 'msgTypANDseqNum', 'srcUID', 'dstUID', 'ackBitANDackNumANDres', 'totOptLen', 'options', 'data'])
+        #self.packet = Packet(msgLen='', msgTypANDseqNum='', srcUID='',dstUID='',ackBitANDackNumANDres='',totOptLen=0,options='',data='')
+        self.msgLen = ''
+        self.msgTypANDseqNum = ''
+        self.srcUID = ''
+        self.dstUID = ''
+        self.ackBitANDackNumANDres = ''
+        self.totOptLen = 0
+        self.options = ''
+        self.data = ''
+
+    def dataReceived(self, data):
+        size = len(data)
+        self.lengthReceived = self.lengthReceived + size
+        '''
+        for i in range(0,size):
+            '''print (self.pos)'''
+            struct.pack_into('c', self.buffer, self.pos, data[i])
+            '''print binascii.hexlify(self.buffer)'''
+            self.pos += 1
+        
+        if (self.lengthReceived >= 2 and self.packSize == 0):
+            tempBuffer = ctypes.create_string_buffer(self.lengthReceived)
+            for i in range(0, self.lengthReceived):
+                tempBuffer[i] = self.buffer[i]
+            self.packSize = ord(self.buffer[0]) + 2*2*2*2*2*2*2*2*ord(self.buffer[1])
+            '''print self.packSize'''
+            self.buffer = ctypes.create_string_buffer(self.packSize)
+            for i in range(0, self.lengthReceived):
+                self.buffer[i] = tempBuffer[i]
+        if (self.lengthReceived >= self.packSize and self.packSize > 0):
+            '''
+            self.packet._replace(msgLen=chr(ord(self.buffer[0]))+chr(2*2*2*2*2*2*2*2*ord(self.buffer[1])))
+            self.packet._replace(msgTypANDseqNum=chr(ord(self.buffer[2])))
+            self.packet._replace(srcUID=chr(ord(self.buffer[3])))
+            self.packet._replace(dstUID=chr(ord(self.buffer[4])))
+            self.packet._replace(ackBitANDackNumANDres=chr(ord(self.buffer[5])))
+            self.packet._replace(totOptLen=ord(self.buffer[6]) + 2*2*2*2*2*2*2*2*ord(self.buffer[7]))
+            '''
+            self.msgLen = chr(ord(self.buffer[0]))+chr(2*2*2*2*2*2*2*2*ord(self.buffer[1]))
+            self.msgTypANDseqNum = chr(ord(self.buffer[2]))
+            self.srcUID = chr(ord(self.buffer[3]))
+            self.dstUID = chr(ord(self.buffer[4]))
+            self.ackBitANDackNumANDres = chr(ord(self.buffer[5]))
+            self.totOptLen = ord(self.buffer[6]) + 2*2*2*2*2*2*2*2*ord(self.buffer[7])
+            '''print self.totOptLen'''
+            for i in range(8, 8+self.totOptLen):
+                self.options = self.options + self.buffer[i]
+            for i in range(8+self.totOptLen, self.packSize - self.totOptLen - 8):
+                self.data = self.data + self.buffer[i]
+        '''

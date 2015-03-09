@@ -1,0 +1,6 @@
+il faut respecter l'ordre :
+setThisUsername
+setUserList
+setMovieList
+
+Mais le problème c'est que quand on appelle setUserList, on ne connait pas la MovieList, donc il faut mettre tous les utilisateurs dans la main room en stockant temporairement la position de tous les utilisateurs entre les différentes movies, puis mettre à jour la liste des utilisateurs avec les Movies quand on en a reçu la liste.
